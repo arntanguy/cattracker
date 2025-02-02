@@ -12,8 +12,21 @@ RUN . ./export.sh  \
     && /opt/esp/idf/tools/idf_tools.py install esp-clang \
     && /opt/esp/idf/tools/idf_tools.py install xtensa-clang
 
-USER ubuntu 
+RUN apt install sudo
+RUN echo "ubuntu:ubuntu" | chpasswd && adduser ubuntu sudo
+# Ensure sudo group users are not 
+# asked for a password when using 
+# sudo command by ammending sudoers file
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> \
+/etc/sudoers
 
+WORKDIR /home/ubuntu
+USER ubuntu
+RUN mkdir apps
+WORKDIR /home/ubuntu/apps
+RUN git clone https://github.com:/gilarus/util-jc.git && cd util-jc/tud && make && make install
+
+WORKDIR /home/ubuntu
 RUN echo "source /opt/esp/idf/export.sh" >> /home/ubuntu/.bashrc
 RUN echo "alias cmake='cmake -DCMAKE_TOOLCHAIN_FILE=/opt/esp/idf/tools/cmake/toolchain-clang-esp32.cmake -GNinja'" >> /home/ubuntu/.bashrc
 ENTRYPOINT ["/bin/bash", "-c"]

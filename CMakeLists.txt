@@ -6,12 +6,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 project(led-blink)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
+# set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 
 include($ENV{IDF_PATH}/tools/cmake/idf.cmake)
 
 idf_build_process(esp32
-                COMPONENTS freertos esptool_py driver
+                COMPONENTS freertos esptool_py driver esp_wifi nvs_flash
                 SDKCONFIG ${CMAKE_BINARY_DIR}/sdkconfig
                 BUILD_DIR ${CMAKE_BINARY_DIR})
 
@@ -20,8 +20,12 @@ idf_build_process(esp32
 
 
 set(elf_file ${CMAKE_PROJECT_NAME}.elf)
-add_executable(${elf_file} main/led-blink.cpp)
-target_link_libraries(${elf_file} idf::freertos idf::spi_flash idf::driver)
+
+# add_executable(${elf_file} main/led-blink.cpp)
+# target_link_libraries(${elf_file} idf::freertos idf::spi_flash idf::driver)
+
+add_executable(${elf_file} main/wifi_ap.cpp)
+target_link_libraries(${elf_file} idf::freertos idf::spi_flash idf::driver idf::esp_wifi idf::nvs_flash)
 idf_build_executable(${elf_file})
 
 
