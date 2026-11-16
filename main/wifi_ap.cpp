@@ -5,6 +5,7 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
+#include <cstdint>
 #include <string.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -31,15 +32,16 @@ constexpr std::string_view EXAMPLE_ESP_WIFI_PASS = "wifi-esp32\0";
 #define EXAMPLE_ESP_WIFI_CHANNEL  0
 #define EXAMPLE_MAX_STA_CONN      10
 
-static const char *TAG = "wifi softAP";
+static const char *TAG = "wifi_softAP";
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
                                     int32_t event_id, void* event_data)
 {
     if (event_id == WIFI_EVENT_AP_STACONNECTED) {
         wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
-        const char * mac = (char*)event->mac;
-        ESP_LOGI(TAG, "AP Client connected %s, AID=%d", mac, event->aid);
+        const uint8_t * mac = event->mac;
+        ESP_LOGI(TAG, "AP Client connected with AID=%d, MAC address: ", event->aid);
+        ESP_LOG_BUFFER_HEX_LEVEL(TAG, mac, 6 * sizeof(uint8_t), ESP_LOG_INFO);
     } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) {
         wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
         // ESP_LOGI(TAG, "station "MACSTR" leave, AID=%d, reason=%d",
