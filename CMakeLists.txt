@@ -1,14 +1,16 @@
 # The following five lines of boilerplate have to be in your project's
 # CMakeLists in this exact order for cmake to work correctly
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 4.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-project(led-blink)
+include($ENV{IDF_PATH}/tools/cmake/idf.cmake)
+set(CMAKE_TOOLCHAIN_FILE $ENV{IDF_PATH}/tools/cmake/toolchain-esp32.cmake)
+
+project(open-pet-tracker)
 
 # set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 
-include($ENV{IDF_PATH}/tools/cmake/idf.cmake)
 
 idf_build_process(esp32
                 COMPONENTS freertos esptool_py driver esp_wifi nvs_flash
@@ -26,6 +28,5 @@ set(elf_file ${CMAKE_PROJECT_NAME}.elf)
 
 add_executable(${elf_file} main/wifi_ap.cpp)
 target_link_libraries(${elf_file} idf::freertos idf::spi_flash idf::driver idf::esp_wifi idf::nvs_flash)
+
 idf_build_executable(${elf_file})
-
-
