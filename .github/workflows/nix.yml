@@ -23,12 +23,12 @@ jobs:
       - uses: cachix/cachix-action@v17
         with:
           name: gepetto
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          # authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix flake check -L
       - run: nix build -L
   check:
     if: always()
-    name: check-macos-linux-nix
+    name: check-nix
     runs-on: ubuntu-latest
     needs:
       - nix

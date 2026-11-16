@@ -27,7 +27,7 @@
             export IDF_PATH="${pkgs.esp-idf-full}";
           '';
         };
-        packages.default = self.packages.${system}.cattracker;
+        packages.default = self.packages.${system}.open-pet-tracker;
       }
     );
 }
