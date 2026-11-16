@@ -17,15 +17,20 @@
             "python3.13-ecdsa-0.19.1"
           ];
         };
+        lib = nixpkgs.lib;
       in
       {
         packages.open-pet-tracker = pkgs.stdenv.mkDerivation {
           pname = "open-pet-tracker";
           version = "0-unstable-2026-11-16";
+          src = lib.cleanSource ./.;
           nativeBuildInputs = [ pkgs.esp-idf-full ];
           shellHook = ''
             export IDF_PATH="${pkgs.esp-idf-full}";
           '';
+          meta = {
+            maintainer = [ lib.maintainers.arntanguy ];
+          };
         };
         packages.default = self.packages.${system}.open-pet-tracker;
       }
