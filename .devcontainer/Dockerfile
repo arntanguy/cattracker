@@ -14,8 +14,8 @@ RUN . ./export.sh  \
 
 RUN apt install sudo
 RUN echo "ubuntu:ubuntu" | chpasswd && adduser ubuntu sudo
-# Ensure sudo group users are not 
-# asked for a password when using 
+# Ensure sudo group users are not
+# asked for a password when using
 # sudo command by ammending sudoers file
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> \
 /etc/sudoers

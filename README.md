@@ -9,6 +9,7 @@ Objectives:
 - [ ] Optional GSM reporting
 - [ ] Sleep modes where the device sleeps for X amount of time, wakes up and tries to report position, etc
 - [ ] GPS tracking
+- [ ] Use Zenoh? https://github.com/georgevio/ESP32-Zenoh
 
 # Usage
 
